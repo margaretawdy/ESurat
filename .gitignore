@@ -129,6 +129,7 @@ crashlytics-build.properties
 fabric.properties
 
 ### AndroidStudio Patch ###
+app/release/
 
 !/gradle/wrapper/gradle-wrapper.jar
 
