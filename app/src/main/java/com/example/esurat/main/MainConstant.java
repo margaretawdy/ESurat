@@ -15,5 +15,5 @@ public class MainConstant {
 //    public static final String BASE_URL = "http://10.0.2.2:8080/esurat-dev/";
 
 //  Uncomment for PDAM local
-    public static final String BASE_URL = "http://36.74.101.8:2000/esurat/";
+    public static final String BASE_URL = "http://36.91.95.243:8084/esurat/";
 }
