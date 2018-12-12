@@ -192,26 +192,28 @@ public class MainDetailActivity extends AppCompatActivity {
     }
 
     private void setupLihatSurat() {
-        mActivityMainDetailBinding.activityMainDetailButtonLihatSurat.setEnabled(false);
+//        mActivityMainDetailBinding.activityMainDetailButtonLihatSurat.setEnabled(true);
 
         mCustomTabActivityHelper = new CustomTabActivityHelper();
         mCustomTabActivityHelper.setConnectionCallback(new CustomTabActivityHelper.ConnectionCallback() {
             @Override
             public void onCustomTabsConnected() {
-                mActivityMainDetailBinding.activityMainDetailButtonLihatSurat.setEnabled(true);
+//                mActivityMainDetailBinding.activityMainDetailButtonLihatSurat.setEnabled(true);
             }
 
             @Override
             public void onCustomTabsDisconnected() {
-                mActivityMainDetailBinding.activityMainDetailButtonLihatSurat.setEnabled(false);
+//                mActivityMainDetailBinding.activityMainDetailButtonLihatSurat.setEnabled(true);
             }
         });
 
         // TODO: Uncomment this code bellow to make pdf viewer viewed the correct pdf.
         mActivityMainDetailBinding.activityMainDetailButtonLihatSurat.setOnClickListener(v ->
         {
+            Log.d(TAG, "setupLihatSurat: FCK");
             if (isStoragePermissionGranted()) {
-                openCustomTabs(MainConstant.BASE_URL + mSurat.getPathPdf());
+//                openCustomTabs(MainConstant.BASE_URL + mSurat.getPathPdf());
+                downloadSurat(MainConstant.BASE_URL + mSurat.getPathPdf());
             }
         });
 
@@ -221,6 +223,12 @@ public class MainDetailActivity extends AppCompatActivity {
     }
 
     private void downloadSurat(String url) {
+        Snackbar snackbarDownloadInfo = Snackbar.make(
+                findViewById(R.id.activity_main_detail_scrollView),
+                R.string.downloading_letter,
+                Snackbar.LENGTH_INDEFINITE);
+        snackbarDownloadInfo.show();
+
         SuratService suratService = ServiceGeneratorUtils.createService(SuratService.class);
         Call<ResponseBody> call = suratService.getSurat(url);
         call.enqueue(new Callback<ResponseBody>() {
@@ -245,6 +253,7 @@ public class MainDetailActivity extends AppCompatActivity {
                                 mActivityMainDetailBinding,
                                 mSurat.getPathPdf().replace("/images/", ""));
                 downloadFileAsyncTask.execute(Objects.requireNonNull(response.body()).byteStream());
+                snackbarDownloadInfo.dismiss();
             }
 
             @Override
